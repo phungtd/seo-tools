@@ -211,7 +211,7 @@ export default {
     team2table() {
       console.log(this.teams)
       this.rows = 0
-      const lines = this.teams.split('\n').filter(line => line.trim() !== '').map(line => line.trim())
+      const lines = this.teams.split('\n').filter(line => line.trim() !== '').map(line => line.trim().replace('.', ''))
       for (const line of lines) {
         const parts = line.split(':').map(part => part.trim())
         if (parts.length !== 2) continue
