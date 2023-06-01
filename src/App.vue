@@ -140,7 +140,9 @@
                           <template v-for="stt in Array.from({ length: this.rows }, (_, i) => i + 1)" :key="stt">
                             <tr>
                               <td style="text-align: center;">{{ stt }}</td>
+                              {{ this.table }}
                               <template v-for="team in this.table" :key="team">
+                                {{ this.table[team] }}
                                 <td>{{ this.table[team][stt] }}</td>
                               </template>
                             </tr>
