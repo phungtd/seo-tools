@@ -184,6 +184,9 @@ export default {
 
       this.filtered = uniqueUrls.join('\n')
     },
+    team2table(){
+      console.log(this.teams)
+    },
     copyLinks() {
       navigator.clipboard.writeText(this.filtered)
     }
