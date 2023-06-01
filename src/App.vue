@@ -24,13 +24,13 @@
         <nav class="mt-3">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-item">
-              <a href="#" :class="{ 'nav-link': true, 'active': this.active === 0 }" @click="this.active = 0">
+              <a href="#loc-link" :class="{ 'nav-link': true, 'active': this.active === 0 }" @click="this.active = 0">
                 <i class="nav-icon fas fa-link"></i>
                 <p>Lọc Link</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="#" :class="{ 'nav-link': true, 'active': this.active === 1 }" @click="this.active = 1">
+              <a href="#team-table" :class="{ 'nav-link': true, 'active': this.active === 1 }" @click="this.active = 1">
                 <i class="nav-icon fas fa-table"></i>
                 <p>Team Table</p>
               </a>
@@ -108,7 +108,8 @@
                 </div>
                 <form action="">
                   <div class="card-body">
-                    <textarea v-model="this.teams" class="form-control input-lg" rows="15" placeholder=""></textarea>
+                    <textarea v-model="this.teams" @input="this.team2table" class="form-control input-lg" rows="15"
+                      placeholder=""></textarea>
                   </div>
                   <div class="card-footer">
                     <button @click.prevent="this.team2table" type="submit" class="btn btn-primary">Chuyển</button>
@@ -186,7 +187,25 @@ export default {
       'rows': 0
     }
   },
+  mounted() {
+    // Check for hash value on initial load
+    const hash = window.location.hash;
+    if (hash) {
+      this.setCurrentTab(hash);
+    }
+
+    // Listen to hashchange event for updating tab on URL change
+    window.addEventListener('hashchange', () => {
+      const hash = window.location.hash;
+      if (hash) {
+        this.setCurrentTab(hash);
+      }
+    });
+  },
   methods: {
+    setCurrentTab(tab) {
+      this.active = ['#loc-link', '#team-table'].indexOf(tab);
+    },
     linkFilter() {
       console.log(this.links)
       const urls = this.links.split('\n');
@@ -211,6 +230,7 @@ export default {
     team2table() {
       console.log(this.teams)
       this.rows = 0
+      this.table = {}
       const lines = this.teams.split('\n').filter(line => line.trim() !== '').map(line => line.trim().replace('.', ''))
       for (const line of lines) {
         const parts = line.split(':').map(part => part.trim())
