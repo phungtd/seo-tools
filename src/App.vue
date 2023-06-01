@@ -124,7 +124,7 @@
                 </div>
                 <form action="">
                   <div class="card-body">
-                    <div contenteditable="true">
+                    <div contenteditable="true" ref="tableHTML">
                       <table
                         style="border-collapse: collapse; width: 100%; border-color: #7e8c8d; border-style: solid; margin-left: auto; margin-right: auto;"
                         border="1" cellspacing="0" cellpadding="5">
@@ -223,7 +223,18 @@ export default {
       console.log(this.table)
     },
     copyLinks() {
-      navigator.clipboard.writeText(this.filtered)
+      navigator.clipboard.writeText(this.filtered).then(() => {
+        alert('Copied')
+      }).catch((error) => {
+
+      });
+    },
+    copyTable() {
+      navigator.clipboard.writeText(this.$refs.tableHTML.innerHTML).then(() => {
+        alert('Copied')
+      }).catch((error) => {
+
+      });
     }
   }
 }
