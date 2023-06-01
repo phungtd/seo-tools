@@ -76,7 +76,7 @@
                     <textarea v-model="this.links" class="form-control input-lg" rows="15" placeholder=""></textarea>
                   </div>
                   <div class="card-footer">
-                    <button @click.prevent="this.linkFilter" type="submit" class="btn btn-primary">-></button>
+                    <button @click.prevent="this.linkFilter" type="submit" class="btn btn-primary">Lọc</button>
                   </div>
                 </form>
               </div>
@@ -111,7 +111,7 @@
                     <textarea v-model="this.teams" class="form-control input-lg" rows="15" placeholder=""></textarea>
                   </div>
                   <div class="card-footer">
-                    <button @click.prevent="this.team2table" type="submit" class="btn btn-primary">-></button>
+                    <button @click.prevent="this.team2table" type="submit" class="btn btn-primary">Chuyển</button>
                   </div>
                 </form>
               </div>
@@ -184,8 +184,16 @@ export default {
 
       this.filtered = uniqueUrls.join('\n')
     },
-    team2table(){
+    team2table() {
       console.log(this.teams)
+      const lines = this.teams.split('\n').filter(line => line.trim() !== '').map(line => line.trim())
+      for (const line of lines) {
+        const parts = line.split(':').map(part => part.trim())
+        if (parts.length !== 2) continue
+        const team = parts[0]
+        const mems = parts[1].split(/[;,]/).map(mem => mem.trim())
+        console.log(team, mems)
+      }
     },
     copyLinks() {
       navigator.clipboard.writeText(this.filtered)
