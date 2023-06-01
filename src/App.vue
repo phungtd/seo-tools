@@ -73,10 +73,10 @@
                 </div>
                 <form action="">
                   <div class="card-body">
-                    <textarea v-model="links" class="form-control input-lg" rows="15" placeholder=""></textarea>
+                    <textarea v-model="this.links" class="form-control input-lg" rows="15" placeholder=""></textarea>
                   </div>
                   <div class="card-footer">
-                    <button @click.prevent="this.linkFilter" type="submit" class="btn btn-primary">Submit</button>
+                    <button @click.prevent="this.linkFilter" type="submit" class="btn btn-primary">-></button>
                   </div>
                 </form>
               </div>
@@ -89,7 +89,7 @@
                 </div>
                 <form action="">
                   <div class="card-body">
-                    <textarea v-model="linkFiltered" class="form-control input-lg" rows="15" placeholder=""></textarea>
+                    <textarea v-model="this.filtered" class="form-control input-lg" rows="15" placeholder=""></textarea>
                   </div>
                   <div class="card-footer">
                     <button @click.prevent="this.copyLinks" type="submit" class="btn btn-primary">Copy</button>
@@ -98,6 +98,40 @@
               </div>
             </div>
 
+          </div>
+
+          <div class="row" v-if="this.active === 1">
+            <div class="col-lg-6">
+              <div class="card card-primary card-outline">
+                <div class="card-header">
+                  <h3 class="card-title">Danh sách</h3>
+                </div>
+                <form action="">
+                  <div class="card-body">
+                    <textarea v-model="this.teams" class="form-control input-lg" rows="15" placeholder=""></textarea>
+                  </div>
+                  <div class="card-footer">
+                    <button @click.prevent="this.team2table" type="submit" class="btn btn-primary">-></button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="card card-primary card-outline">
+                <div class="card-header">
+                  <h3 class="card-title">HTML</h3>
+                </div>
+                <form action="">
+                  <div class="card-body">
+                    <textarea v-model="this.table" class="form-control input-lg" rows="15" placeholder=""></textarea>
+                  </div>
+                  <div class="card-footer">
+                    <button @click.prevent="this.copyTable" type="submit" class="btn btn-primary">Copy</button>
+                  </div>
+                </form>
+              </div>
+            </div>
           </div>
 
         </div>
@@ -123,7 +157,9 @@ export default {
     return {
       'active': 0,
       'links': '',
-      'linkFiltered': ''
+      'filtered': '',
+      'teams': '',
+      'table': '',
     }
   },
   methods: {
@@ -146,10 +182,10 @@ export default {
         return true;
       });
 
-      this.linkFiltered = uniqueUrls.join('\n')
+      this.filtered = uniqueUrls.join('\n')
     },
     copyLinks() {
-      navigator.clipboard.writeText(this.linkFiltered)
+      navigator.clipboard.writeText(this.filtered)
     }
   }
 }
