@@ -148,5 +148,8 @@ export default {
 }
 </script>
 
+<style src="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback"></style>
+<style src="../node_modules/admin-lte/plugins/fontawesome-free/css/all.min.css"></style>
+<style src="../node_modules/admin-lte/dist/css/adminlte.min.css?v=3.2.0"></style>
 <style scoped>
 </style>
