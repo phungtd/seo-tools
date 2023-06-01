@@ -137,9 +137,9 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <template v-for="stt in Array.from({ length: 12 }, (_, i) => i)" :key="stt">
+                          <template v-for="stt in Array.from({ length: 11 }, (_, i) => i)" :key="stt">
                             <tr>
-                              <td style="text-align: center;">{{ stt }}</td>
+                              <td style="text-align: center;">{{ stt + 1 }}</td>
                               <template v-for="(mems, team) in this.table" :key="team">
                                 <td>{{ mems[stt] ?? '' }}</td>
                               </template>
