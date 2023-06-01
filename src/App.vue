@@ -15,8 +15,7 @@
 
       <a href="#" class="brand-link">
         <img src="/src/assets/fav/android/res/mipmap-hdpi/ic_launcher.png" alt="SEO Tools Logo"
-             class="brand-image img-circle elevation-3"
-             style="opacity: .8">
+          class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">SEO Tools</span>
       </a>
 
@@ -24,11 +23,16 @@
 
         <nav class="mt-3">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-
             <li class="nav-item">
-              <a href="#" class="nav-link">
+              <a href="#" :class="{ 'nav-link': true, 'active': this.active === 0 }" @click="this.active = 0">
                 <i class="nav-icon fas fa-link"></i>
-                <p>Lọc backlink</p>
+                <p>Lọc Link</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" :class="{ 'nav-link': true, 'active': this.active === 1 }" @click="this.active = 1">
+                <i class="nav-icon fas fa-table"></i>
+                <p>Team Table</p>
               </a>
             </li>
           </ul>
@@ -44,12 +48,14 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0">Lọc backlink</h1>
+              <h1 class="m-0" v-if="this.active === 0">Lọc Link</h1>
+              <h1 class="m-0" v-if="this.active === 1">Team Table</h1>
             </div>
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="#">Tools</a></li>
-                <li class="breadcrumb-item active">Lọc backlink</li>
+                <li class="breadcrumb-item"><a href="/">Tools</a></li>
+                <li class="breadcrumb-item active" v-if="this.active === 0">Lọc Link</li>
+                <li class="breadcrumb-item active" v-if="this.active === 1">Team Table</li>
               </ol>
             </div>
           </div>
@@ -59,7 +65,7 @@
 
       <div class="content">
         <div class="container-fluid">
-          <div class="row">
+          <div class="row" v-if="this.active === 0">
             <div class="col-lg-6">
               <div class="card card-primary card-outline">
                 <div class="card-header">
@@ -115,6 +121,7 @@ export default {
   name: "App",
   data() {
     return {
+      'active': 0,
       'links': '',
       'linkFiltered': ''
     }
