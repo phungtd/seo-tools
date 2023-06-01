@@ -129,15 +129,15 @@
                         style="border-collapse: collapse; width: 100%; border-color: #7e8c8d; border-style: solid; margin-left: auto; margin-right: auto;"
                         border="1" cellspacing="0" cellpadding="5">
                         <thead>
-                          <th>
-                          <td>STT</td>
-                          <template v-for="(mems, team) in this.table" :key="team">
-                            <td>Đội hình dự kiến của {{ team }}</td>
-                          </template>
-                          </th>
+                          <tr>
+                            <th style="text-align: center;">STT</th>
+                            <template v-for="(mems, team) in this.table" :key="team">
+                              <th>Đội hình dự kiến của {{ team }}</th>
+                            </template>
+                          </tr>
                         </thead>
                         <tbody>
-                          <template v-for="stt in Array.from({ length: this.rows }, (_, i) => i + 1)" :key="stt">
+                          <template v-for="stt in Array.from({ length: this.rows })" :key="stt">
                             <tr>
                               <td style="text-align: center;">{{ stt }}</td>
                               <template v-for="(mems, team) in this.table" :key="team">
