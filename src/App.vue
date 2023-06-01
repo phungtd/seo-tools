@@ -124,7 +124,30 @@
                 </div>
                 <form action="">
                   <div class="card-body">
-                    <textarea v-model="this.table" class="form-control input-lg" rows="15" placeholder=""></textarea>
+                    <div contenteditable="true">
+                      <table
+                        style="border-collapse: collapse; width: 100%; border-color: #7e8c8d; border-style: solid; margin-left: auto; margin-right: auto;"
+                        border="1" cellspacing="0" cellpadding="5">
+                        <thead>
+                          <th>
+                          <td>STT</td>
+                          <template v-for="team in this.table" :key="team">
+                            <td>Đội hình dự kiến của {{ team }}</td>
+                          </template>
+                          </th>
+                        </thead>
+                        <tbody>
+                          <template v-for="stt in Array.from({ length: this.rows }, (_, i) => i + 1)" :key="stt">
+                            <tr>
+                              <td style="text-align: center;">{{ stt }}</td>
+                              <template v-for="team in this.table" :key="team">
+                                <td>{{ this.table[team][stt] }}</td>
+                              </template>
+                            </tr>
+                          </template>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                   <div class="card-footer">
                     <button @click.prevent="this.copyTable" type="submit" class="btn btn-primary">Copy</button>
@@ -159,7 +182,8 @@ export default {
       'links': '',
       'filtered': '',
       'teams': '',
-      'table': '',
+      'table': {},
+      'rows': 0
     }
   },
   methods: {
@@ -186,15 +210,17 @@ export default {
     },
     team2table() {
       console.log(this.teams)
+      this.rows = 0
       const lines = this.teams.split('\n').filter(line => line.trim() !== '').map(line => line.trim())
       for (const line of lines) {
         const parts = line.split(':').map(part => part.trim())
         if (parts.length !== 2) continue
         const team = parts[0]
         const mems = parts[1].split(/[;,]/).map(mem => mem.trim())
-        this.teams[team] = mems
+        this.table[team] = mems
+        this.rows = Math.max(this.rows, mems.length)
       }
-      console.log(this.teams)
+      console.log(this.table)
     },
     copyLinks() {
       navigator.clipboard.writeText(this.filtered)
