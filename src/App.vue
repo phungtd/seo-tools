@@ -192,8 +192,9 @@ export default {
         if (parts.length !== 2) continue
         const team = parts[0]
         const mems = parts[1].split(/[;,]/).map(mem => mem.trim())
-        console.log(team, mems)
+        this.teams[team] = mems
       }
+      console.log(this.teams)
     },
     copyLinks() {
       navigator.clipboard.writeText(this.filtered)
