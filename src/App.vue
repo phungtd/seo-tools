@@ -143,7 +143,7 @@
                               {{ this.table }}
                               <template v-for="team in this.table" :key="team">
                                 {{ this.table[team] }}
-                                <td>{{ this.table[team][stt] }}</td>
+                                <!-- <td>{{ this.table[team][stt] }}</td> -->
                               </template>
                             </tr>
                           </template>
