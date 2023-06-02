@@ -133,7 +133,7 @@
                 </div>
                 <form action="">
                   <div class="card-body">
-                    <div contenteditable="true" ref="tableHTML">
+                    <div contenteditable="true" ref="tableHTML" id="tableHTML">
                       <table
                         style="border-collapse: collapse; width: 100%; border-color: #7e8c8d; border-style: solid; margin-left: auto; margin-right: auto;"
                         border="1" cellspacing="0" cellpadding="5">
@@ -192,7 +192,7 @@
                 </div>
                 <form action="">
                   <div class="card-body">
-                    <div contenteditable="true" ref="h2hHTML">
+                    <div contenteditable="true" ref="h2hHTML" id="h2hHTML">
                       <table
                         style="border-collapse: collapse; width: 100%; margin-left: auto; margin-right: auto; font-size: 12px;"
                         border="0" cellspacing="0" cellpadding="5">
@@ -448,8 +448,11 @@ export default {
       return 'last' + Object.keys(this.lastMatches).indexOf(team)
     },
     copy(ref) {
-      debugger
-      navigator.clipboard.writeText(this.$refs[ref].value.innerHTML).then(() => {
+      const content = this.$refs[ref].innerHTML
+      if (content === undefined) {
+        content = this.$refs[ref][0].innerHTML
+      }
+      navigator.clipboard.writeText(content).then(() => {
         alert('Copied')
       }).catch((error) => {
 
