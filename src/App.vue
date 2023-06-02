@@ -167,18 +167,40 @@
           </div>
 
           <div class="row" v-if="this.active === 2">
-            <div class="col-12">
+            <div class="col-lg-6">
               <div class="card card-primary card-outline">
+                <div class="card-header">
+                  <h3 class="card-title">Source</h3>
+                </div>
                 <form action="">
                   <div class="card-body">
-                    <input type="url" v-model="this.h2hUrl" @input="this.url2table" class="form-control input-lg" />
-                    <div contenteditable="true" ref="h2hHTML"></div>
+                    <textarea v-model="this.h2h" @input="this.h2h2table" class="form-control input-lg" rows="15"
+                      placeholder=""></textarea>
+                  </div>
+                  <div class="card-footer">
+                    <button @click.prevent="this.h2h2table" type="submit" class="btn btn-primary">Chuyển</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="card card-primary card-outline">
+                <div class="card-header">
+                  <h3 class="card-title">HTML</h3>
+                </div>
+                <form action="">
+                  <div class="card-body">
+                    <div contenteditable="true" ref="h2hHTML">
+                    </div>
+                  </div>
+                  <div class="card-footer">
+                    <button @click.prevent="this.copyH2H" type="submit" class="btn btn-primary">Copy</button>
                   </div>
                 </form>
               </div>
             </div>
           </div>
-
         </div>
       </div>
 
@@ -208,7 +230,7 @@ export default {
       'teams': '',
       'table': {},
       'rows': 0,
-      'h2hUrl': '',
+      'h2h': '',
     }
   },
   mounted() {
@@ -266,85 +288,75 @@ export default {
       }
       console.log(this.table)
     },
-    url2table() {
-      this.fetchHTMLCode(this.h2hUrl)
-    },
-    async fetchHTMLCode(url) {
-      try {
-        const response = await axios.get(url);
-        const source = response.data;
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(source, 'text/html');
-        const h2hDiv = doc.querySelector('.h2h');
-        if (h2hDiv) {
-          const bgWhiteDiv = h2hDiv.querySelector('.bg-white');
-          if (bgWhiteDiv) {
-            // Find all the 'grid-lich-su-ct' elements, which represent individual match entries
-            var matchElements = bgWhiteDiv.getElementsByClassName('grid-lich-su-ct');
+    h2h2table() {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(this.h2h, 'text/html');
+      const h2hDiv = doc.querySelector('.h2h');
+      if (h2hDiv) {
+        const bgWhiteDiv = h2hDiv.querySelector('.bg-white');
+        if (bgWhiteDiv) {
+          // Find all the 'grid-lich-su-ct' elements, which represent individual match entries
+          var matchElements = bgWhiteDiv.getElementsByClassName('grid-lich-su-ct');
 
-            // Create an empty array to store the match data
-            var matchData = [];
+          // Create an empty array to store the match data
+          var matchData = [];
 
-            // Iterate over each match element and extract the relevant data
-            for (var i = 0; i < matchElements.length; i++) {
-              var matchElement = matchElements[i];
+          // Iterate over each match element and extract the relevant data
+          for (var i = 0; i < matchElements.length; i++) {
+            var matchElement = matchElements[i];
 
-              // Extract the required data from the match element
-              var time = matchElement.querySelector('.time-giai-1-ct').textContent;
-              var homeTeam = matchElement.querySelectorAll('.ten-chu-ct span')[0].textContent;
-              var awayTeam = matchElement.querySelectorAll('.ten-chu-ct span')[1].textContent;
-              var handicap = matchElement.querySelector('.ket-qua-lich-su-ct span').textContent;
-              var scoreHome = matchElement.querySelectorAll('.ket-qua-lich-su-ct span')[0].textContent;
-              var scoreAway = matchElement.querySelectorAll('.ket-qua-lich-su-ct span')[1].textContent;
-              var result = matchElement.querySelector('.w-ct, .l-ct, .d-ct').textContent;
+            // Extract the required data from the match element
+            var time = matchElement.querySelector('.time-giai-1-ct').textContent;
+            var homeTeam = matchElement.querySelectorAll('.ten-chu-ct span')[0].textContent;
+            var awayTeam = matchElement.querySelectorAll('.ten-chu-ct span')[1].textContent;
+            var handicap = matchElement.querySelector('.ket-qua-lich-su-ct span').textContent;
+            var scoreHome = matchElement.querySelectorAll('.ket-qua-lich-su-ct span')[0].textContent;
+            var scoreAway = matchElement.querySelectorAll('.ket-qua-lich-su-ct span')[1].textContent;
+            var result = matchElement.querySelector('.w-ct, .l-ct, .d-ct').textContent;
 
-              // Create an object to store the match data
-              var match = {
-                time: time,
-                homeTeam: homeTeam,
-                awayTeam: awayTeam,
-                handicap: handicap,
-                scoreHome: scoreHome,
-                scoreAway: scoreAway,
-                result: result
-              };
+            // Create an object to store the match data
+            var match = {
+              time: time,
+              homeTeam: homeTeam,
+              awayTeam: awayTeam,
+              handicap: handicap,
+              scoreHome: scoreHome,
+              scoreAway: scoreAway,
+              result: result
+            };
 
-              // Add the match data to the array
-              matchData.push(match);
-            }
-
-            // Create a table element
-            var table = document.createElement('table');
-
-            // Create the table header row
-            var tableHeaderRow = document.createElement('tr');
-            tableHeaderRow.innerHTML = '<th>Time</th><th>Home Team</th><th>Away Team</th><th>Handicap</th><th>Score</th><th>Result</th>';
-            table.appendChild(tableHeaderRow);
-
-            // Iterate over the match data and create table rows
-            for (var j = 0; j < matchData.length; j++) {
-              var match = matchData[j];
-
-              // Create a table row for the match
-              var tableRow = document.createElement('tr');
-              tableRow.innerHTML = '<td>' + match.time + '</td>' +
-                '<td>' + match.homeTeam + '</td>' +
-                '<td>' + match.awayTeam + '</td>' +
-                '<td>' + match.handicap + '</td>' +
-                '<td>' + match.scoreHome + '-' + match.scoreAway + '</td>' +
-                '<td>' + match.result + '</td>';
-
-              // Add the table row to the table
-              table.appendChild(tableRow);
-            }
-
-            console.log(table)
-
+            // Add the match data to the array
+            matchData.push(match);
           }
-        }
 
-      } catch (error) {
-        console.error('Error fetching HTML code:', error);
+          // Create a table element
+          var table = document.createElement('table');
+
+          // Create the table header row
+          var tableHeaderRow = document.createElement('tr');
+          tableHeaderRow.innerHTML = '<th>Time</th><th>Home Team</th><th>Away Team</th><th>Handicap</th><th>Score</th><th>Result</th>';
+          table.appendChild(tableHeaderRow);
+
+          // Iterate over the match data and create table rows
+          for (var j = 0; j < matchData.length; j++) {
+            var match = matchData[j];
+
+            // Create a table row for the match
+            var tableRow = document.createElement('tr');
+            tableRow.innerHTML = '<td>' + match.time + '</td>' +
+              '<td>' + match.homeTeam + '</td>' +
+              '<td>' + match.awayTeam + '</td>' +
+              '<td>' + match.handicap + '</td>' +
+              '<td>' + match.scoreHome + '-' + match.scoreAway + '</td>' +
+              '<td>' + match.result + '</td>';
+
+            // Add the table row to the table
+            table.appendChild(tableRow);
+          }
+
+          console.log(table)
+
+        }
       }
     },
     copyLinks() {
@@ -356,6 +368,13 @@ export default {
     },
     copyTable() {
       navigator.clipboard.writeText(this.$refs.tableHTML.innerHTML).then(() => {
+        alert('Copied')
+      }).catch((error) => {
+
+      });
+    },
+    copyH2H() {
+      navigator.clipboard.writeText(this.$refs.h2hHTML.innerHTML).then(() => {
         alert('Copied')
       }).catch((error) => {
 
