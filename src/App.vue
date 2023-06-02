@@ -370,6 +370,8 @@ export default {
             // Add the match data to the array
             this.h2hMatches.push(match);
           }
+
+          this.h2hMatches = this.h2hMatches.slice(0, 6)
         }
       }
     },
