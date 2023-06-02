@@ -193,13 +193,13 @@
                   <div class="card-body">
                     <div contenteditable="true" ref="h2hHTML">
                       <table
-                        style="border-collapse: collapse; width: 100%; border-color: #7e8c8d; border-style: solid; margin-left: auto; margin-right: auto;"
+                        style="border-collapse: collapse; width: 100%; border-color: #7e8c8d; border-style: solid; margin-left: auto; margin-right: auto; font-size: 12px;"
                         border="1" cellspacing="0" cellpadding="5">
                         <thead>
                           <tr>
                             <th>Thời gian</th>
                             <th style="text-align:right">Đội nhà</th>
-                            <th style="text-align:center">Tỷ số</th>
+                            <th style="text-align:center;white-space:nowrap">Tỷ số</th>
                             <th style="text-align:left">Đội khách</th>
                             <!-- <th>Kèo</th> -->
                             <!-- <th>Kết quả</th> -->
@@ -345,6 +345,9 @@ export default {
             var scoreHome = score.querySelectorAll('span')[0].textContent;
             var scoreAway = score.querySelectorAll('span')[1].textContent;
             var result = matchElement.querySelector('.w-ct, .l-ct, .d-ct').textContent;
+
+            var timeParts = time.split(' ')
+            time = timeParts[timeParts.length - 1]
 
             // Create an object to store the match data
             var match = {
