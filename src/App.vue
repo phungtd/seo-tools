@@ -306,7 +306,9 @@ export default {
             var matchElement = matchElements[i];
 
             // Extract the required data from the match element
+            debugger
             var time = matchElement.querySelector('.time-giai-1-ct').textContent;
+            var comp = matchElement.querySelector('.time-giai-2-ct').textContent;
             var homeTeam = matchElement.querySelectorAll('.ten-chu-ct span')[0].textContent;
             var awayTeam = matchElement.querySelectorAll('.ten-chu-ct span')[1].textContent;
             var handicap = matchElement.querySelector('.ket-qua-lich-su-ct')[0].textContent;
@@ -318,6 +320,7 @@ export default {
             // Create an object to store the match data
             var match = {
               time: time,
+              comp: comp,
               homeTeam: homeTeam,
               awayTeam: awayTeam,
               handicap: handicap,
@@ -335,7 +338,7 @@ export default {
 
           // Create the table header row
           var tableHeaderRow = document.createElement('tr');
-          tableHeaderRow.innerHTML = '<th>Time</th><th>Home Team</th><th>Away Team</th><th>Handicap</th><th>Score</th><th>Result</th>';
+          tableHeaderRow.innerHTML = '<th>Time</th><th>Comp</th><th>Home Team</th><th>Away Team</th><th>Handicap</th><th>Score</th><th>Result</th>';
           table.appendChild(tableHeaderRow);
 
           // Iterate over the match data and create table rows
@@ -345,6 +348,7 @@ export default {
             // Create a table row for the match
             var tableRow = document.createElement('tr');
             tableRow.innerHTML = '<td>' + match.time + '</td>' +
+              '<td>' + match.comp + '</td>' +
               '<td>' + match.homeTeam + '</td>' +
               '<td>' + match.awayTeam + '</td>' +
               '<td>' + match.handicap + '</td>' +
