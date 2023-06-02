@@ -202,8 +202,7 @@
                             <th style="text-align:right">Đội nhà</th>
                             <th style="text-align:center">Tỷ số</th>
                             <th style="text-align:left">Đội khách</th>
-                            <!-- <th>Kèo</th> -->
-                            <!-- <th>Kết quả</th> -->
+                            <th style="text-align:center">KQ</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -220,8 +219,7 @@
                                 <template v-if="match.handicap.indexOf('+') !== -1"><b>{{ match.awayTeam }}</b></template>
                                 <template v-else>{{ match.awayTeam }}</template>
                               </td>
-                              <!-- <td align="center">{{ match.handicap }}</td> -->
-                              <!-- <td align="center">{{ match.result }}</td> -->
+                              <td align="center">{{ match.result }}</td>
                             </tr>
                           </template>
                         </tbody>
@@ -254,8 +252,7 @@
                               <th style="text-align:right">Đội nhà</th>
                               <th style="text-align:center">Tỷ số</th>
                               <th style="text-align:left">Đội khách</th>
-                              <!-- <th>Kèo</th> -->
-                              <!-- <th>Kết quả</th> -->
+                              <th style="text-align:center">KQ</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -274,8 +271,7 @@
                                   }}</b></template>
                                   <template v-else>{{ match.awayTeam }}</template>
                                 </td>
-                                <!-- <td align="center">{{ match.handicap }}</td> -->
-                                <!-- <td align="center">{{ match.result }}</td> -->
+                                <td align="center">{{ match.result }}</td>
                               </tr>
                             </template>
                           </tbody>
@@ -437,6 +433,7 @@ export default {
           for (var j = 0; j < rows.length; j++) {
             this.lastMatches[team].push(this.el2match(rows[j]))
           }
+          this.lastMatches[team] = this.lastMatches[team].slice(0, 6)
         }
       }
     },
