@@ -242,7 +242,7 @@
                   </div>
                   <form action="">
                     <div class="card-body">
-                      <div contenteditable="true" :ref="this.getRef(team)">
+                      <div contenteditable="true" :ref="this.getRef(team)" :id="this.getRef(team)">
                         <table
                           style="border-collapse: collapse; width: 100%; margin-left: auto; margin-right: auto; font-size: 12px;"
                           border="0" cellspacing="0" cellpadding="5">
@@ -280,7 +280,7 @@
                       </div>
                     </div>
                     <div class="card-footer">
-                      <button @click.prevent="this.copy(this.getRef(team))" type="submit"
+                      <button @click.prevent="this.copy(this.getRef(team))" :data-id="this.getRef(team)" type="submit"
                         class="btn btn-primary">Copy</button>
                     </div>
                   </form>
