@@ -35,6 +35,12 @@
                 <p>Team Table</p>
               </a>
             </li>
+            <li class="nav-item">
+              <a href="#h2h-table" :class="{ 'nav-link': true, 'active': this.active === 2 }" @click="this.active = 2">
+                <i class="nav-icon fas fa-table"></i>
+                <p>H2H Table</p>
+              </a>
+            </li>
           </ul>
         </nav>
 
@@ -50,12 +56,14 @@
             <div class="col-sm-6">
               <h1 class="m-0" v-if="this.active === 0">Lọc Link</h1>
               <h1 class="m-0" v-if="this.active === 1">Team Table</h1>
+              <h1 class="m-0" v-if="this.active === 2">H2H Table</h1>
             </div>
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="/">Tools</a></li>
                 <li class="breadcrumb-item active" v-if="this.active === 0">Lọc Link</li>
                 <li class="breadcrumb-item active" v-if="this.active === 1">Team Table</li>
+                <li class="breadcrumb-item active" v-if="this.active === 2">H2H Table</li>
               </ol>
             </div>
           </div>
@@ -158,6 +166,19 @@
             </div>
           </div>
 
+          <div class="row" v-if="this.active === 2">
+            <div class="col-lg-6">
+              <div class="card card-primary card-outline">
+                <form action="">
+                  <div class="card-body">
+                    <input type="url" v-model="this.h2hUrl" @input="this.url2table" class="form-control input-lg" />
+                    <div contenteditable="true" ref="h2hHTML"></div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -175,6 +196,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: "App",
   data() {
@@ -184,7 +207,8 @@ export default {
       'filtered': '',
       'teams': '',
       'table': {},
-      'rows': 0
+      'rows': 0,
+      'h2hUrl': '',
     }
   },
   mounted() {
@@ -241,6 +265,9 @@ export default {
         this.rows = Math.max(this.rows, mems.length)
       }
       console.log(this.table)
+    },
+    url2table() {
+
     },
     copyLinks() {
       navigator.clipboard.writeText(this.filtered).then(() => {
