@@ -355,7 +355,7 @@ export default {
             };
 
             // Add the match data to the array
-            h2hMatches.push(match);
+            this.h2hMatches.push(match);
           }
         }
       }
