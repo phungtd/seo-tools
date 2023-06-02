@@ -309,9 +309,10 @@ export default {
             var time = matchElement.querySelector('.time-giai-1-ct').textContent;
             var homeTeam = matchElement.querySelectorAll('.ten-chu-ct span')[0].textContent;
             var awayTeam = matchElement.querySelectorAll('.ten-chu-ct span')[1].textContent;
-            var handicap = matchElement.querySelector('.ket-qua-lich-su-ct span').textContent;
-            var scoreHome = matchElement.querySelectorAll('.ket-qua-lich-su-ct span')[0].textContent;
-            var scoreAway = matchElement.querySelectorAll('.ket-qua-lich-su-ct span')[1].textContent;
+            var handicap = matchElement.querySelector('.ket-qua-lich-su-ct')[0].textContent;
+            var score = matchElement.querySelectorAll('.ket-qua-lich-su-ct')[1]
+            var scoreHome = score.querySelectorAll('span')[0].textContent;
+            var scoreAway = score.querySelectorAll('span')[1].textContent;
             var result = matchElement.querySelector('.w-ct, .l-ct, .d-ct').textContent;
 
             // Create an object to store the match data
@@ -353,9 +354,7 @@ export default {
             // Add the table row to the table
             table.appendChild(tableRow);
           }
-
           console.log(table)
-
         }
       }
     },
