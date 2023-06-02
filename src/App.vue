@@ -448,6 +448,7 @@ export default {
       return 'last' + Object.keys(this.lastMatches).indexOf(team)
     },
     copy(ref) {
+      console.log(this.$refs, this.$refs[ref], this.$refs[ref].innerHTML)
       navigator.clipboard.writeText(this.$refs[ref].innerHTML).then(() => {
         alert('Copied')
       }).catch((error) => {
