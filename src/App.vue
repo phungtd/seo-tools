@@ -167,14 +167,14 @@
           </div>
 
           <div class="row" v-if="this.active === 2">
-            <div class="col-lg-4">
+            <div class="col-lg-12">
               <div class="card card-primary card-outline">
                 <div class="card-header">
                   <h3 class="card-title">Source</h3>
                 </div>
                 <form action="">
                   <div class="card-body">
-                    <textarea v-model="this.h2h" @input="this.h2h2table" class="form-control input-lg" rows="15"
+                    <textarea v-model="this.h2h" @input="this.h2h2table" class="form-control input-lg"
                       placeholder=""></textarea>
                   </div>
                   <div class="card-footer">
@@ -183,7 +183,8 @@
                 </form>
               </div>
             </div>
-
+          </div>
+          <div class="row" v-if="this.active === 2">
             <div class="col-lg-4">
               <div class="card card-primary card-outline">
                 <div class="card-header">
@@ -233,6 +234,64 @@
                 </form>
               </div>
             </div>
+
+            <template v-for="(matches, team) in this.lastMatches" :key="team">
+
+              <div class="col-lg-4">
+                <div class="card card-primary card-outline">
+                  <div class="card-header">
+                    <h3 class="card-title">{{ team }}</h3>
+                  </div>
+                  <form action="">
+                    <div class="card-body">
+                      <div contenteditable="true" ref="">
+                        <table
+                          style="border-collapse: collapse; width: 100%; margin-left: auto; margin-right: auto; font-size: 12px;"
+                          border="0" cellspacing="0" cellpadding="5">
+                          <thead>
+                            <tr style="background:#dadce0; border: 1px solid #7e8c8d; white-space:nowrap;">
+                              <th>Thời gian</th>
+                              <th style="text-align:right">Đội nhà</th>
+                              <th style="text-align:center">Tỷ số</th>
+                              <th style="text-align:left">Đội khách</th>
+                              <!-- <th>Kèo</th> -->
+                              <!-- <th>Kết quả</th> -->
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <template v-for="(match, idx) in matches" :key="idx">
+                              <tr
+                                :style="'border: 1px solid  #7e8c8d;border-top:0 none;' + (idx % 2 === 1 ? 'background: #f6f6f6;' : '')">
+                                <td>{{ match.time }}<br />{{ match.comp }}</td>
+                                <td style="text-align:right;">
+                                  <template v-if="match.handicap.indexOf('-') !== -1"><b>{{ match.homeTeam
+                                  }}</b></template>
+                                  <template v-else>{{ match.homeTeam }}</template>
+                                </td>
+                                <td style="text-align:center;">{{ match.scoreHome }} - {{ match.scoreAway }}</td>
+                                <td style="text-align:left;">
+                                  <template v-if="match.handicap.indexOf('+') !== -1"><b>{{ match.awayTeam
+                                  }}</b></template>
+                                  <template v-else>{{ match.awayTeam }}</template>
+                                </td>
+                                <!-- <td align="center">{{ match.handicap }}</td> -->
+                                <!-- <td align="center">{{ match.result }}</td> -->
+                              </tr>
+                            </template>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div class="card-footer">
+                      <button @click.prevent="this.copyH2H" type="submit" class="btn btn-primary">Copy</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+            </template>
+
+
           </div>
         </div>
       </div>
@@ -372,14 +431,13 @@ export default {
         const bgWhiteDivs = last5Div.querySelectorAll('.bg-white')
         for (var i = 0; i < bgWhiteDivs.length; i++) {
           const col = bgWhiteDivs[i]
-          const team = col.querySelector('.lich-su-ct').textContent
+          const team = col.querySelector('.lich-su-ct').textContent.trim()
           const rows = col.getElementsByClassName('grid-lich-su-ct')
           this.lastMatches[team] = []
           for (var j = 0; j < rows.length; j++) {
             this.lastMatches[team].push(this.el2match(rows[j]))
           }
         }
-        console.log(this.lastMatches)
       }
     },
     copyLinks() {
