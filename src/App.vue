@@ -306,12 +306,11 @@ export default {
             var matchElement = matchElements[i];
 
             // Extract the required data from the match element
-            debugger
             var time = matchElement.querySelector('.time-giai-1-ct').textContent;
             var comp = matchElement.querySelector('.time-giai-2-ct').textContent;
             var homeTeam = matchElement.querySelectorAll('.ten-chu-ct span')[0].textContent;
             var awayTeam = matchElement.querySelectorAll('.ten-chu-ct span')[1].textContent;
-            var handicap = matchElement.querySelector('.ket-qua-lich-su-ct')[0].textContent;
+            var handicap = matchElement.querySelectorAll('.ket-qua-lich-su-ct')[0].textContent;
             var score = matchElement.querySelectorAll('.ket-qua-lich-su-ct')[1]
             var scoreHome = score.querySelectorAll('span')[0].textContent;
             var scoreAway = score.querySelectorAll('span')[1].textContent;
