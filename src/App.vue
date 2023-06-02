@@ -448,7 +448,7 @@ export default {
       return 'last' + Object.keys(this.lastMatches).indexOf(team)
     },
     copy(ref) {
-      const content = this.$refs[ref].innerHTML
+      var content = this.$refs[ref].innerHTML
       if (content === undefined) {
         content = this.$refs[ref][0].innerHTML
       }
