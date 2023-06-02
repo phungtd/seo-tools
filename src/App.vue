@@ -100,7 +100,7 @@
                     <textarea v-model="this.filtered" class="form-control input-lg" rows="15" placeholder=""></textarea>
                   </div>
                   <div class="card-footer">
-                    <button @click.prevent="this.copyLinks" type="submit" class="btn btn-primary">Copy</button>
+                    <button @click.prevent="this.copy('copyLinks')" type="submit" class="btn btn-primary">Copy</button>
                   </div>
                 </form>
               </div>
@@ -159,7 +159,7 @@
                     </div>
                   </div>
                   <div class="card-footer">
-                    <button @click.prevent="this.copyTable" type="submit" class="btn btn-primary">Copy</button>
+                    <button @click.prevent="this.copy('tableHTML')" type="submit" class="btn btn-primary">Copy</button>
                   </div>
                 </form>
               </div>
@@ -219,7 +219,7 @@
                                 <template v-if="match.handicap.indexOf('+') !== -1"><b>{{ match.awayTeam }}</b></template>
                                 <template v-else>{{ match.awayTeam }}</template>
                               </td>
-                              <td align="center">{{ match.result }}</td>
+                              <td align="center"><span :class="this.classes[match.result]">{{ match.result }}</span></td>
                             </tr>
                           </template>
                         </tbody>
@@ -227,7 +227,7 @@
                     </div>
                   </div>
                   <div class="card-footer">
-                    <button @click.prevent="this.copyH2H" type="submit" class="btn btn-primary">Copy</button>
+                    <button @click.prevent="this.copy('h2hHTML')" type="submit" class="btn btn-primary">Copy</button>
                   </div>
                 </form>
               </div>
@@ -242,7 +242,7 @@
                   </div>
                   <form action="">
                     <div class="card-body">
-                      <div contenteditable="true" ref="">
+                      <div contenteditable="true" :ref="'last' + Object.keys(this.lastMatches).indexOf(team)">
                         <table
                           style="border-collapse: collapse; width: 100%; margin-left: auto; margin-right: auto; font-size: 12px;"
                           border="0" cellspacing="0" cellpadding="5">
@@ -271,7 +271,8 @@
                                   }}</b></template>
                                   <template v-else>{{ match.awayTeam }}</template>
                                 </td>
-                                <td align="center">{{ match.result }}</td>
+                                <td align="center"><span :class="this.classes[match.result]">{{ match.result }}</span>
+                                </td>
                               </tr>
                             </template>
                           </tbody>
@@ -279,7 +280,8 @@
                       </div>
                     </div>
                     <div class="card-footer">
-                      <button @click.prevent="this.copyH2H" type="submit" class="btn btn-primary">Copy</button>
+                      <button @click.prevent="this.copy('last' + Object.keys(this.lastMatches).indexOf(team))"
+                        type="submit" class="btn btn-primary">Copy</button>
                     </div>
                   </form>
                 </div>
@@ -323,7 +325,12 @@ export default {
       // h2h
       'h2h': '',
       'h2hMatches': [],
-      'lastMatches': {}
+      'lastMatches': {},
+      'classes': {
+        'T': 'w-ct',
+        'H': 'd-ct',
+        'B': 'l-ct'
+      }
     }
   },
   mounted() {
@@ -437,22 +444,8 @@ export default {
         }
       }
     },
-    copyLinks() {
-      navigator.clipboard.writeText(this.filtered).then(() => {
-        alert('Copied')
-      }).catch((error) => {
-
-      })
-    },
-    copyTable() {
-      navigator.clipboard.writeText(this.$refs.tableHTML.innerHTML).then(() => {
-        alert('Copied')
-      }).catch((error) => {
-
-      })
-    },
-    copyH2H() {
-      navigator.clipboard.writeText(this.$refs.h2hHTML.innerHTML).then(() => {
+    copy(ref) {
+      navigator.clipboard.writeText(this.$refs[ref].innerHTML).then(() => {
         alert('Copied')
       }).catch((error) => {
 
