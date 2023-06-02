@@ -196,22 +196,24 @@
                         style="border-collapse: collapse; width: 100%; border-color: #7e8c8d; border-style: solid; margin-left: auto; margin-right: auto;"
                         border="1" cellspacing="0" cellpadding="5">
                         <thead>
-                          <th>Thời gian</th>
-                          <th>Đội nhà</th>
-                          <th>Tỷ số</th>
-                          <th>Đội khách</th>
-                          <th>Kèo</th>
-                          <th>Kết quả</th>
+                          <tr>
+                            <th>Thời gian</th>
+                            <th align="right">Đội nhà</th>
+                            <th>Tỷ số</th>
+                            <th align="left">Đội khách</th>
+                            <th>Kèo</th>
+                            <th>Kết quả</th>
+                          </tr>
                         </thead>
                         <tbody>
                           <template v-for="(match, idx) in this.h2hMatches" :key="idx">
                             <tr>
                               <td>{{ match.time }}<br />{{ match.comp }}</td>
-                              <td>{{ match.homeTeam }}</td>
-                              <td>{{ match.scoreHome }} - {{ match.scoreAway }}</td>
+                              <td align="right">{{ match.homeTeam }}</td>
+                              <td align="center">{{ match.scoreHome }} - {{ match.scoreAway }}</td>
                               <td>{{ match.awayTeam }}</td>
-                              <td>{{ match.handicap }}</td>
-                              <td>{{ match.result }}</td>
+                              <td align="center">{{ match.handicap }}</td>
+                              <td align="center">{{ match.result }}</td>
                             </tr>
                           </template>
                         </tbody>
