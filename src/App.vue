@@ -167,7 +167,7 @@
           </div>
 
           <div class="row" v-if="this.active === 2">
-            <div class="col-lg-6">
+            <div class="col-lg-4">
               <div class="card card-primary card-outline">
                 <div class="card-header">
                   <h3 class="card-title">Source</h3>
@@ -184,10 +184,10 @@
               </div>
             </div>
 
-            <div class="col-lg-6">
+            <div class="col-lg-4">
               <div class="card card-primary card-outline">
                 <div class="card-header">
-                  <h3 class="card-title">HTML</h3>
+                  <h3 class="card-title">H2H</h3>
                 </div>
                 <form action="">
                   <div class="card-body">
@@ -196,7 +196,7 @@
                         style="border-collapse: collapse; width: 100%; margin-left: auto; margin-right: auto; font-size: 12px;"
                         border="0" cellspacing="0" cellpadding="5">
                         <thead>
-                          <tr style="border: 1px solid  #7e8c8d;white-space:nowrap">
+                          <tr style="background:#dadce0; border: 1px solid #7e8c8d; white-space:nowrap;">
                             <th>Thời gian</th>
                             <th style="text-align:right">Đội nhà</th>
                             <th style="text-align:center">Tỷ số</th>
@@ -208,14 +208,14 @@
                         <tbody>
                           <template v-for="(match, idx) in this.h2hMatches" :key="idx">
                             <tr
-                              :style="'border: 1px solid  #7e8c8d;border-top:0 none;' + (idx % 2 === 0 ? 'background: #f6f6f6' : '')">
+                              :style="'border: 1px solid  #7e8c8d;border-top:0 none;' + (idx % 2 === 1 ? 'background: #f6f6f6;' : '')">
                               <td>{{ match.time }}<br />{{ match.comp }}</td>
-                              <td style="text-align:right">
+                              <td style="text-align:right;">
                                 <template v-if="match.handicap.indexOf('-') !== -1"><b>{{ match.homeTeam }}</b></template>
                                 <template v-else>{{ match.homeTeam }}</template>
                               </td>
-                              <td style="text-align:center">{{ match.scoreHome }} - {{ match.scoreAway }}</td>
-                              <td style="text-align:left">
+                              <td style="text-align:center;">{{ match.scoreHome }} - {{ match.scoreAway }}</td>
+                              <td style="text-align:left;">
                                 <template v-if="match.handicap.indexOf('+') !== -1"><b>{{ match.awayTeam }}</b></template>
                                 <template v-else>{{ match.awayTeam }}</template>
                               </td>
@@ -251,7 +251,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from 'axios'
 
 export default {
   name: "App",
@@ -267,46 +267,47 @@ export default {
       'rows': 0,
       // h2h
       'h2h': '',
-      'h2hMatches': []
+      'h2hMatches': [],
+      'lastMatches': {}
     }
   },
   mounted() {
     // Check for hash value on initial load
-    const hash = window.location.hash;
+    const hash = window.location.hash
     if (hash) {
-      this.setCurrentTab(hash);
+      this.setCurrentTab(hash)
     }
 
     // Listen to hashchange event for updating tab on URL change
     window.addEventListener('hashchange', () => {
-      const hash = window.location.hash;
+      const hash = window.location.hash
       if (hash) {
-        this.setCurrentTab(hash);
+        this.setCurrentTab(hash)
       }
-    });
+    })
   },
   methods: {
     setCurrentTab(tab) {
-      this.active = ['#loc-link', '#team-table', '#h2h-table'].indexOf(tab);
+      this.active = ['#loc-link', '#team-table', '#h2h-table'].indexOf(tab)
     },
     linkFilter() {
       console.log(this.links)
-      const urls = this.links.split('\n');
-      const domains = {};
+      const urls = this.links.split('\n')
+      const domains = {}
       const uniqueUrls = urls.filter(function (url) {
-        let _url = url.replace(/^\/|\/$/g, '');
-        _url = _url.startsWith('http') ? _url : 'http://' + _url;
-        const a = document.createElement('a');
+        let _url = url.replace(/^\/|\/$/g, '')
+        _url = _url.startsWith('http') ? _url : 'http://' + _url
+        const a = document.createElement('a')
         a.href = _url
-        const domain = a.hostname;
+        const domain = a.hostname
         if (domains[domain]) {
           // we have seen this domain before, so ignore the URL
-          return false;
+          return false
         }
         // mark domain, retain URL
-        domains[domain] = true;
-        return true;
-      });
+        domains[domain] = true
+        return true
+      })
 
       this.filtered = uniqueUrls.join('\n')
     },
@@ -325,55 +326,60 @@ export default {
       }
       console.log(this.table)
     },
+    el2match(matchElement) {
+      var time = matchElement.querySelector('.time-giai-1-ct').textContent
+      var comp = matchElement.querySelector('.time-giai-2-ct').textContent
+      var homeTeam = matchElement.querySelectorAll('.ten-chu-ct span')[0].textContent
+      var awayTeam = matchElement.querySelectorAll('.ten-chu-ct span')[1].textContent
+      var handicap = matchElement.querySelectorAll('.ket-qua-lich-su-ct')[0].textContent
+      var score = matchElement.querySelectorAll('.ket-qua-lich-su-ct')[1]
+      var scoreHome = score.querySelectorAll('span')[0].textContent
+      var scoreAway = score.querySelectorAll('span')[1].textContent
+      var result = matchElement.querySelector('.w-ct, .l-ct, .d-ct').textContent
+
+      var timeParts = time.split(' ')
+      time = timeParts[timeParts.length - 1]
+
+      return {
+        time: time.trim(),
+        comp: comp.trim(),
+        homeTeam: homeTeam.trim(),
+        awayTeam: awayTeam.trim(),
+        handicap: handicap.trim(),
+        scoreHome: scoreHome.trim(),
+        scoreAway: scoreAway.trim(),
+        result: result.trim()
+      }
+    },
     h2h2table() {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(this.h2h, 'text/html');
-      const h2hDiv = doc.querySelector('.h2h');
+      const parser = new DOMParser()
+      const doc = parser.parseFromString(this.h2h, 'text/html')
+      const h2hDiv = doc.querySelector('.h2h')
       if (h2hDiv) {
-        const bgWhiteDiv = h2hDiv.querySelector('.bg-white');
+        const bgWhiteDiv = h2hDiv.querySelector('.bg-white')
         if (bgWhiteDiv) {
-          // Find all the 'grid-lich-su-ct' elements, which represent individual match entries
-          var matchElements = bgWhiteDiv.getElementsByClassName('grid-lich-su-ct');
-
-          // Create an empty array to store the match data
-          this.h2hMatches = [];
-
-          // Iterate over each match element and extract the relevant data
+          const matchElements = bgWhiteDiv.getElementsByClassName('grid-lich-su-ct')
+          this.h2hMatches = []
           for (var i = 0; i < matchElements.length; i++) {
-            var matchElement = matchElements[i];
-
-            // Extract the required data from the match element
-            var time = matchElement.querySelector('.time-giai-1-ct').textContent;
-            var comp = matchElement.querySelector('.time-giai-2-ct').textContent;
-            var homeTeam = matchElement.querySelectorAll('.ten-chu-ct span')[0].textContent;
-            var awayTeam = matchElement.querySelectorAll('.ten-chu-ct span')[1].textContent;
-            var handicap = matchElement.querySelectorAll('.ket-qua-lich-su-ct')[0].textContent;
-            var score = matchElement.querySelectorAll('.ket-qua-lich-su-ct')[1]
-            var scoreHome = score.querySelectorAll('span')[0].textContent;
-            var scoreAway = score.querySelectorAll('span')[1].textContent;
-            var result = matchElement.querySelector('.w-ct, .l-ct, .d-ct').textContent;
-
-            var timeParts = time.split(' ')
-            time = timeParts[timeParts.length - 1]
-
-            // Create an object to store the match data
-            var match = {
-              time: time.trim(),
-              comp: comp.trim(),
-              homeTeam: homeTeam.trim(),
-              awayTeam: awayTeam.trim(),
-              handicap: handicap.trim(),
-              scoreHome: scoreHome.trim(),
-              scoreAway: scoreAway.trim(),
-              result: result.trim()
-            };
-
-            // Add the match data to the array
-            this.h2hMatches.push(match);
+            this.h2hMatches.push(this.el2match(matchElements[i]))
           }
-
           this.h2hMatches = this.h2hMatches.slice(0, 6)
         }
+      }
+
+      const last5Div = doc.querySelector('.h2h-center')
+      if (last5Div) {
+        const bgWhiteDivs = last5Div.querySelectorAll('.bg-white')
+        for (var i = 0; i < bgWhiteDivs.length; i++) {
+          const col = bgWhiteDivs[i]
+          const team = col.querySelector('.lich-su-ct').textContent
+          const rows = col.getElementsByClassName('grid-lich-su-ct')
+          this.lastMatches[team] = []
+          for (var j = 0; j < rows.length; j++) {
+            this.lastMatches[team].push(this.el2match(rows[j]))
+          }
+        }
+        console.log(this.lastMatches)
       }
     },
     copyLinks() {
@@ -381,21 +387,21 @@ export default {
         alert('Copied')
       }).catch((error) => {
 
-      });
+      })
     },
     copyTable() {
       navigator.clipboard.writeText(this.$refs.tableHTML.innerHTML).then(() => {
         alert('Copied')
       }).catch((error) => {
 
-      });
+      })
     },
     copyH2H() {
       navigator.clipboard.writeText(this.$refs.h2hHTML.innerHTML).then(() => {
         alert('Copied')
       }).catch((error) => {
 
-      });
+      })
     }
   }
 }
