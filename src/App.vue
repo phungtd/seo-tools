@@ -205,12 +205,14 @@
                         </thead>
                         <tbody>
                           <template v-for="(match, idx) in this.h2hMatches" :key="idx">
-                            <td>{{ match.time }}<br />{{ match.comp }}</td>
-                            <td>{{ match.homeTeam }}</td>
-                            <td>{{ match.scoreHome }} - {{ match.scoreAway }}</td>
-                            <td>{{ match.awayTeam }}</td>
-                            <td>{{ match.handicap }}</td>
-                            <td>{{ match.result }}</td>
+                            <tr>
+                              <td>{{ match.time }}<br />{{ match.comp }}</td>
+                              <td>{{ match.homeTeam }}</td>
+                              <td>{{ match.scoreHome }} - {{ match.scoreAway }}</td>
+                              <td>{{ match.awayTeam }}</td>
+                              <td>{{ match.handicap }}</td>
+                              <td>{{ match.result }}</td>
+                            </tr>
                           </template>
                         </tbody>
                       </table>
@@ -385,6 +387,8 @@ export default {
 }
 </script>
 
-<style>@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback');
+<style>
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback');
 @import url('../node_modules/admin-lte/plugins/fontawesome-free/css/all.min.css');
-@import url('../node_modules/admin-lte/dist/css/adminlte.min.css');</style>
+@import url('../node_modules/admin-lte/dist/css/adminlte.min.css');
+</style>
