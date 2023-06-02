@@ -167,7 +167,7 @@
           </div>
 
           <div class="row" v-if="this.active === 2">
-            <div class="col-lg-6">
+            <div class="col-12">
               <div class="card card-primary card-outline">
                 <form action="">
                   <div class="card-body">
@@ -228,7 +228,7 @@ export default {
   },
   methods: {
     setCurrentTab(tab) {
-      this.active = ['#loc-link', '#team-table'].indexOf(tab);
+      this.active = ['#loc-link', '#team-table', '#h2h-table'].indexOf(tab);
     },
     linkFilter() {
       console.log(this.links)
@@ -267,7 +267,85 @@ export default {
       console.log(this.table)
     },
     url2table() {
+      this.fetchHTMLCode(this.h2hUrl)
+    },
+    async fetchHTMLCode(url) {
+      try {
+        const response = await axios.get(url);
+        const source = response.data;
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(source, 'text/html');
+        const h2hDiv = doc.querySelector('.h2h');
+        if (h2hDiv) {
+          const bgWhiteDiv = h2hDiv.querySelector('.bg-white');
+          if (bgWhiteDiv) {
+            // Find all the 'grid-lich-su-ct' elements, which represent individual match entries
+            var matchElements = bgWhiteDiv.getElementsByClassName('grid-lich-su-ct');
 
+            // Create an empty array to store the match data
+            var matchData = [];
+
+            // Iterate over each match element and extract the relevant data
+            for (var i = 0; i < matchElements.length; i++) {
+              var matchElement = matchElements[i];
+
+              // Extract the required data from the match element
+              var time = matchElement.querySelector('.time-giai-1-ct').textContent;
+              var homeTeam = matchElement.querySelectorAll('.ten-chu-ct span')[0].textContent;
+              var awayTeam = matchElement.querySelectorAll('.ten-chu-ct span')[1].textContent;
+              var handicap = matchElement.querySelector('.ket-qua-lich-su-ct span').textContent;
+              var scoreHome = matchElement.querySelectorAll('.ket-qua-lich-su-ct span')[0].textContent;
+              var scoreAway = matchElement.querySelectorAll('.ket-qua-lich-su-ct span')[1].textContent;
+              var result = matchElement.querySelector('.w-ct, .l-ct, .d-ct').textContent;
+
+              // Create an object to store the match data
+              var match = {
+                time: time,
+                homeTeam: homeTeam,
+                awayTeam: awayTeam,
+                handicap: handicap,
+                scoreHome: scoreHome,
+                scoreAway: scoreAway,
+                result: result
+              };
+
+              // Add the match data to the array
+              matchData.push(match);
+            }
+
+            // Create a table element
+            var table = document.createElement('table');
+
+            // Create the table header row
+            var tableHeaderRow = document.createElement('tr');
+            tableHeaderRow.innerHTML = '<th>Time</th><th>Home Team</th><th>Away Team</th><th>Handicap</th><th>Score</th><th>Result</th>';
+            table.appendChild(tableHeaderRow);
+
+            // Iterate over the match data and create table rows
+            for (var j = 0; j < matchData.length; j++) {
+              var match = matchData[j];
+
+              // Create a table row for the match
+              var tableRow = document.createElement('tr');
+              tableRow.innerHTML = '<td>' + match.time + '</td>' +
+                '<td>' + match.homeTeam + '</td>' +
+                '<td>' + match.awayTeam + '</td>' +
+                '<td>' + match.handicap + '</td>' +
+                '<td>' + match.scoreHome + '-' + match.scoreAway + '</td>' +
+                '<td>' + match.result + '</td>';
+
+              // Add the table row to the table
+              table.appendChild(tableRow);
+            }
+
+            console.log(table)
+
+          }
+        }
+
+      } catch (error) {
+        console.error('Error fetching HTML code:', error);
+      }
     },
     copyLinks() {
       navigator.clipboard.writeText(this.filtered).then(() => {
