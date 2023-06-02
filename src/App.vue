@@ -219,7 +219,7 @@
                                 <template v-if="match.handicap.indexOf('+') !== -1"><b>{{ match.awayTeam }}</b></template>
                                 <template v-else>{{ match.awayTeam }}</template>
                               </td>
-                              <td align="center"><span :class="this.classes[match.result]">{{ match.result }}</span></td>
+                              <td align="center" :class="this.classes[match.result]"><span>{{ match.result }}</span></td>
                             </tr>
                           </template>
                         </tbody>
@@ -242,7 +242,7 @@
                   </div>
                   <form action="">
                     <div class="card-body">
-                      <div contenteditable="true" :ref="'last' + Object.keys(this.lastMatches).indexOf(team)">
+                      <div contenteditable="true" :ref="this.getRef(team)">
                         <table
                           style="border-collapse: collapse; width: 100%; margin-left: auto; margin-right: auto; font-size: 12px;"
                           border="0" cellspacing="0" cellpadding="5">
@@ -271,7 +271,7 @@
                                   }}</b></template>
                                   <template v-else>{{ match.awayTeam }}</template>
                                 </td>
-                                <td align="center"><span :class="this.classes[match.result]">{{ match.result }}</span>
+                                <td align="center" :class="this.classes[match.result]"><span>{{ match.result }}</span>
                                 </td>
                               </tr>
                             </template>
@@ -280,8 +280,8 @@
                       </div>
                     </div>
                     <div class="card-footer">
-                      <button @click.prevent="this.copy('last' + Object.keys(this.lastMatches).indexOf(team))"
-                        type="submit" class="btn btn-primary">Copy</button>
+                      <button @click.prevent="this.copy(this.getRef(team))" type="submit"
+                        class="btn btn-primary">Copy</button>
                     </div>
                   </form>
                 </div>
@@ -443,6 +443,9 @@ export default {
           this.lastMatches[team] = this.lastMatches[team].slice(0, 6)
         }
       }
+    },
+    getRef(team) {
+      return 'last-' + Object.keys(this.lastMatches).indexOf(team)
     },
     copy(ref) {
       navigator.clipboard.writeText(this.$refs[ref].innerHTML).then(() => {
