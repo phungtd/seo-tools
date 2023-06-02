@@ -209,9 +209,15 @@
                           <template v-for="(match, idx) in this.h2hMatches" :key="idx">
                             <tr>
                               <td>{{ match.time }}<br />{{ match.comp }}</td>
-                              <td style="text-align:right">{{ match.homeTeam }}</td>
+                              <td style="text-align:right">
+                                <template v-if="match.handicap.indexOf('-') !== -1"><b>{{ match.homeTeam }}</b></template>
+                                <template v-else>{{ match.homeTeam }}</template>
+                              </td>
                               <td style="text-align:center">{{ match.scoreHome }} - {{ match.scoreAway }}</td>
-                              <td style="text-align:left">{{ match.awayTeam }}</td>
+                              <td style="text-align:left">
+                                <template v-if="match.handicap.indexOf('+') !== -1"><b>{{ match.awayTeam }}</b></template>
+                                <template v-else>{{ match.awayTeam }}</template>
+                              </td>
                               <!-- <td align="center">{{ match.handicap }}</td> -->
                               <!-- <td align="center">{{ match.result }}</td> -->
                             </tr>
