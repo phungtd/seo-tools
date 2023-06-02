@@ -193,13 +193,13 @@
                   <div class="card-body">
                     <div contenteditable="true" ref="h2hHTML">
                       <table
-                        style="border-collapse: collapse; width: 100%; border-color: #7e8c8d; border-style: solid; margin-left: auto; margin-right: auto; font-size: 12px;"
-                        border="1" cellspacing="0" cellpadding="5">
+                        style="border-collapse: collapse; width: 100%; margin-left: auto; margin-right: auto; font-size: 12px;"
+                        border="0" cellspacing="0" cellpadding="5">
                         <thead>
-                          <tr>
+                          <tr style="border: 1px solid  #7e8c8d;white-space:nowrap">
                             <th>Thời gian</th>
                             <th style="text-align:right">Đội nhà</th>
-                            <th style="text-align:center;white-space:nowrap">Tỷ số</th>
+                            <th style="text-align:center">Tỷ số</th>
                             <th style="text-align:left">Đội khách</th>
                             <!-- <th>Kèo</th> -->
                             <!-- <th>Kết quả</th> -->
@@ -207,7 +207,8 @@
                         </thead>
                         <tbody>
                           <template v-for="(match, idx) in this.h2hMatches" :key="idx">
-                            <tr>
+                            <tr
+                              :style="'border: 1px solid  #7e8c8d;border-top:0 none;' + (idx % 2 === 0 ? 'background: #f6f6f6' : '')">
                               <td>{{ match.time }}<br />{{ match.comp }}</td>
                               <td style="text-align:right">
                                 <template v-if="match.handicap.indexOf('-') !== -1"><b>{{ match.homeTeam }}</b></template>
