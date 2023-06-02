@@ -445,10 +445,9 @@ export default {
       }
     },
     getRef(team) {
-      return 'last-' + Object.keys(this.lastMatches).indexOf(team)
+      return 'last' + Object.keys(this.lastMatches).indexOf(team)
     },
     copy(ref) {
-      debugger
       navigator.clipboard.writeText(this.$refs[ref].innerHTML).then(() => {
         alert('Copied')
       }).catch((error) => {
