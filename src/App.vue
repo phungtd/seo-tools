@@ -192,6 +192,28 @@
                 <form action="">
                   <div class="card-body">
                     <div contenteditable="true" ref="h2hHTML">
+                      <table
+                        style="border-collapse: collapse; width: 100%; border-color: #7e8c8d; border-style: solid; margin-left: auto; margin-right: auto;"
+                        border="1" cellspacing="0" cellpadding="5">
+                        <thead>
+                          <th>Thời gian</th>
+                          <th>Đội nhà</th>
+                          <th>Tỷ số</th>
+                          <th>Đội khách</th>
+                          <th>Kèo</th>
+                          <th>Kết quả</th>
+                        </thead>
+                        <tbody>
+                          <template v-for="(match, idx) in this.h2hMatches" :key="idx">
+                            <td>{{ match.time }}<br />{{ match.comp }}</td>
+                            <td>{{ match.homeTeam }}</td>
+                            <td>{{ match.scoreHome }} - {{ match.scoreAway }}</td>
+                            <td>{{ match.awayTeam }}</td>
+                            <td>{{ match.handicap }}</td>
+                            <td>{{ match.result }}</td>
+                          </template>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                   <div class="card-footer">
@@ -225,12 +247,16 @@ export default {
   data() {
     return {
       'active': 0,
+      // link
       'links': '',
       'filtered': '',
+      // team
       'teams': '',
       'table': {},
       'rows': 0,
+      // h2h
       'h2h': '',
+      'h2hMatches': []
     }
   },
   mounted() {
@@ -299,7 +325,7 @@ export default {
           var matchElements = bgWhiteDiv.getElementsByClassName('grid-lich-su-ct');
 
           // Create an empty array to store the match data
-          var matchData = [];
+          this.h2hMatches = [];
 
           // Iterate over each match element and extract the relevant data
           for (var i = 0; i < matchElements.length; i++) {
@@ -318,46 +344,19 @@ export default {
 
             // Create an object to store the match data
             var match = {
-              time: time,
-              comp: comp,
-              homeTeam: homeTeam,
-              awayTeam: awayTeam,
-              handicap: handicap,
-              scoreHome: scoreHome,
-              scoreAway: scoreAway,
-              result: result
+              time: time.trim(),
+              comp: comp.trim(),
+              homeTeam: homeTeam.trim(),
+              awayTeam: awayTeam.trim(),
+              handicap: handicap.trim(),
+              scoreHome: scoreHome.trim(),
+              scoreAway: scoreAway.trim(),
+              result: result.trim()
             };
 
             // Add the match data to the array
-            matchData.push(match);
+            h2hMatches.push(match);
           }
-
-          // Create a table element
-          var table = document.createElement('table');
-
-          // Create the table header row
-          var tableHeaderRow = document.createElement('tr');
-          tableHeaderRow.innerHTML = '<th>Time</th><th>Comp</th><th>Home Team</th><th>Away Team</th><th>Handicap</th><th>Score</th><th>Result</th>';
-          table.appendChild(tableHeaderRow);
-
-          // Iterate over the match data and create table rows
-          for (var j = 0; j < matchData.length; j++) {
-            var match = matchData[j];
-
-            // Create a table row for the match
-            var tableRow = document.createElement('tr');
-            tableRow.innerHTML = '<td>' + match.time + '</td>' +
-              '<td>' + match.comp + '</td>' +
-              '<td>' + match.homeTeam + '</td>' +
-              '<td>' + match.awayTeam + '</td>' +
-              '<td>' + match.handicap + '</td>' +
-              '<td>' + match.scoreHome + '-' + match.scoreAway + '</td>' +
-              '<td>' + match.result + '</td>';
-
-            // Add the table row to the table
-            table.appendChild(tableRow);
-          }
-          console.log(table)
         }
       }
     },
@@ -386,8 +385,6 @@ export default {
 }
 </script>
 
-<style>
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback');
+<style>@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback');
 @import url('../node_modules/admin-lte/plugins/fontawesome-free/css/all.min.css');
-@import url('../node_modules/admin-lte/dist/css/adminlte.min.css');
-</style>
+@import url('../node_modules/admin-lte/dist/css/adminlte.min.css');</style>
